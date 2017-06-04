@@ -52,9 +52,9 @@ public class SFTPConnection implements Connection {
 		for(int i = 0; i < files.length; ++i) {
 			Controller.updateMessage("Uploading files... " + i + "/" + files.length + " files uploaded.");
 			remotePaths[i] = (currentDirectory + files[i].getName());
-			//if(!forceUpload && fileExists(remotePaths[i])) // file already exists
-				//continue;
-			//this.channel.put(files[i].getAbsolutePath(), remotePaths[i]);
+			if(!forceUpload && fileExists(remotePaths[i])) // file already exists
+				continue;
+			this.channel.put(files[i].getAbsolutePath(), remotePaths[i]);
 		}
 		
 		Controller.updateMessage("Upload complete.");
