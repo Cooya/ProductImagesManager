@@ -22,7 +22,7 @@ public class Controller {
 	private static Thread currentProcess;
 	//private static File zipArchive;
 	private static File workbookFile;
-	private static UITable table;
+	private static ProductTable table;
 	private static Map<String, String[]> filePaths;
 	private static SimpleStringProperty message;
 
@@ -49,13 +49,13 @@ public class Controller {
 			View.displayView("Invalid port. Please select the port 21 (FTP) or 22 (SFTP).");
 			return;
 		}
-		table = new UITable();
+		table = new ProductTable();
 		filePaths = new HashMap<String, String[]>();
 		message = new SimpleStringProperty();
 		View.displayView(null);
 	}
 	
-	public static ObservableList<Room> getObservableTable() {
+	public static ObservableList<Product> getObservableTable() {
 		return table.getObservableTable();
 	}
 	

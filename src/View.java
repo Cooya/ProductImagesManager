@@ -30,7 +30,7 @@ public class View extends Application {
 	private static Stage mainStage;
 	private static Stage messagePopUp;
 	private static Stage passwordPopUp;
-	private static TableView<Room> table;
+	private static TableView<Product> table;
 	private static Button uploadButton;
 	private static Button loadButton;
 	private static Button saveButton;
@@ -63,28 +63,28 @@ public class View extends Application {
 		*/
 
 		// create table
-		table = new TableView<Room>();
+		table = new TableView<Product>();
 		table.setEditable(false);
 
 		// create columns
-		TableColumn<Room, ImageView> image = new TableColumn<Room, ImageView>("Image");
-		image.setCellValueFactory(new PropertyValueFactory<Room, ImageView>("image"));
-		TableColumn<Room, String> styleNumber = new TableColumn<Room, String>("Style number");
-		styleNumber.setCellValueFactory(new PropertyValueFactory<Room, String>("styleNumber"));
-		TableColumn<Room, String> name = new TableColumn<Room, String>("Name");
-		name.setCellValueFactory(new PropertyValueFactory<Room, String>("name"));
-		TableColumn<Room, String> size = new TableColumn<Room, String>("Size");
-		size.setCellValueFactory(new PropertyValueFactory<Room, String>("size"));
-		TableColumn<Room, String> frontImageUrl = new TableColumn<Room, String>("Front image URL");
-		frontImageUrl.setCellValueFactory(new PropertyValueFactory<Room, String>("frontImageUrl"));
-		TableColumn<Room, String> backImageUrl = new TableColumn<Room, String>("Back image URL");
-		backImageUrl.setCellValueFactory(new PropertyValueFactory<Room, String>("backImageUrl"));
-		TableColumn<Room, String> firstExtraImageUrl = new TableColumn<Room, String>("First extra image URL");
-		firstExtraImageUrl.setCellValueFactory(new PropertyValueFactory<Room, String>("firstExtraImageUrl"));
-		TableColumn<Room, String> secondExtraImageUrl = new TableColumn<Room, String>("Second extra image URL");
-		secondExtraImageUrl.setCellValueFactory(new PropertyValueFactory<Room, String>("secondExtraImageUrl"));
-		TableColumn<Room, String> thirdExtraImageUrl = new TableColumn<Room, String>("Third extra image URL");
-		thirdExtraImageUrl.setCellValueFactory(new PropertyValueFactory<Room, String>("thirdExtraImageUrl"));
+		TableColumn<Product, ImageView> image = new TableColumn<Product, ImageView>("Image");
+		image.setCellValueFactory(new PropertyValueFactory<Product, ImageView>("image"));
+		TableColumn<Product, String> styleNumber = new TableColumn<Product, String>("Style number");
+		styleNumber.setCellValueFactory(new PropertyValueFactory<Product, String>("styleNumber"));
+		TableColumn<Product, String> name = new TableColumn<Product, String>("Name");
+		name.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
+		TableColumn<Product, String> size = new TableColumn<Product, String>("Size");
+		size.setCellValueFactory(new PropertyValueFactory<Product, String>("size"));
+		TableColumn<Product, String> frontImageUrl = new TableColumn<Product, String>("Front image URL");
+		frontImageUrl.setCellValueFactory(new PropertyValueFactory<Product, String>("frontImageUrl"));
+		TableColumn<Product, String> backImageUrl = new TableColumn<Product, String>("Back image URL");
+		backImageUrl.setCellValueFactory(new PropertyValueFactory<Product, String>("backImageUrl"));
+		TableColumn<Product, String> firstExtraImageUrl = new TableColumn<Product, String>("First extra image URL");
+		firstExtraImageUrl.setCellValueFactory(new PropertyValueFactory<Product, String>("firstExtraImageUrl"));
+		TableColumn<Product, String> secondExtraImageUrl = new TableColumn<Product, String>("Second extra image URL");
+		secondExtraImageUrl.setCellValueFactory(new PropertyValueFactory<Product, String>("secondExtraImageUrl"));
+		TableColumn<Product, String> thirdExtraImageUrl = new TableColumn<Product, String>("Third extra image URL");
+		thirdExtraImageUrl.setCellValueFactory(new PropertyValueFactory<Product, String>("thirdExtraImageUrl"));
 
 		// add columns to table
 		table.setItems(Controller.getObservableTable());
@@ -93,8 +93,8 @@ public class View extends Application {
 
 		// adapt width of columns
 		//image.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
-		image.setMaxWidth(Room.IMAGE_WIDTH);
-		image.setPrefWidth(Room.IMAGE_WIDTH);
+		image.setMaxWidth(Product.IMAGE_WIDTH);
+		image.setPrefWidth(Product.IMAGE_WIDTH);
 		styleNumber.prefWidthProperty().bind(table.widthProperty().multiply(0.1));
 		name.prefWidthProperty().bind(table.widthProperty().multiply(0.2));
 		size.prefWidthProperty().bind(table.widthProperty().multiply(0.1));

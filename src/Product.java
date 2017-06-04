@@ -2,12 +2,14 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Map;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public class Room {
+public class Product {
 	protected static final int IMAGE_WIDTH = 80;
 	protected static final int IMAGE_HEIGHT = 120;
 	
@@ -21,16 +23,22 @@ public class Room {
 	private String firstExtraImageUrl;
 	private String secondExtraImageUrl;
 	private String thirdExtraImageUrl;
+	private int firstImageUrlPos;
 	
-	public Room(Row row) throws FileNotFoundException {
+	public Product(Row row, int[] posArray) throws Exception {
 		this.row = row;
 		this.thumbnail = null;
-		this.styleNumber = row.getCell(0).getStringCellValue();
-		this.name = row.getCell(1).getStringCellValue();
-		this.size = row.getCell(5).getStringCellValue();
+		Cell styleNumberCell = row.getCell(posArray[0]);
+		styleNumberCell.setCellType(CellType.STRING);
+		this.styleNumber = styleNumberCell.getStringCellValue();
+		this.name = row.getCell(posArray[1]).getStringCellValue();
+		Cell sizeCell = row.getCell(posArray[2]);
+		sizeCell.setCellType(CellType.STRING);
+		this.size = sizeCell.getStringCellValue();
+		this.firstImageUrlPos = posArray[3];
 	}
 	
-	public Room update(Map<String, String[]> filePaths) throws FileNotFoundException {
+	public Product update(Map<String, String[]> filePaths) throws FileNotFoundException {
 		String[] urlArray = filePaths.get(this.styleNumber);
 		if(urlArray != null) {
 			this.thumbnail = new ImageView(new Image(new FileInputStream(urlArray[0])));
@@ -43,11 +51,11 @@ public class Room {
 			this.secondExtraImageUrl = urlArray[4];
 			this.thirdExtraImageUrl = urlArray[5];
 			
-			this.row.getCell(7).setCellValue(urlArray[1]);
-			this.row.getCell(8).setCellValue(urlArray[2]);
-			this.row.getCell(9).setCellValue(urlArray[3]);
-			this.row.getCell(10).setCellValue(urlArray[4]);
-			this.row.getCell(11).setCellValue(urlArray[5]);
+			this.row.getCell(this.firstImageUrlPos).setCellValue(urlArray[1]);
+			this.row.getCell(this.firstImageUrlPos + 1).setCellValue(urlArray[2]);
+			this.row.getCell(this.firstImageUrlPos + 2).setCellValue(urlArray[3]);
+			this.row.getCell(this.firstImageUrlPos + 3).setCellValue(urlArray[4]);
+			this.row.getCell(this.firstImageUrlPos + 4).setCellValue(urlArray[5]);
 		}
 		return this;
 	}
