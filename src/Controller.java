@@ -62,7 +62,7 @@ public class Controller {
 	public static ObservableValue<String> getMessage() {
 		return message;
 	}
-
+	
 	/*
 	public static File getZipArchive() {
 		return zipArchive;
@@ -91,6 +91,10 @@ public class Controller {
 		System.out.println(newMessage);
 	}
 	
+	public static boolean isImagesDirDefined() {
+		return !config.getLocalImagesFolder().equals("");
+	}
+	
 	protected static boolean isValidPassword(String str) {
 		return hashString(str).equals(HASH);
 	}
@@ -106,7 +110,7 @@ public class Controller {
 		}
 	}
 	
-	public static void runProcess(String processName) {
+	public static void runProcess(String processName, Object... args) {
 		View.displayMessagePopUp();
 		currentProcess = new Thread() {
 			@Override
@@ -123,7 +127,7 @@ public class Controller {
 					}
 				else if(processName.equals("upload"))
 					try {
-						processZipArchive();
+						processZipArchive(args.length > 0 ? (File) args[0] : null);
 						if(!table.isEmpty())
 							table.updateTable(filePaths);
 					} catch(Exception e) {
@@ -156,7 +160,7 @@ public class Controller {
 			currentProcess.stop(); // naughty boy
 	}
 	
-	private static void processZipArchive() throws Exception {
+	private static void processZipArchive(File imagesDir) throws Exception {
 		// old version (extract images from a zip archive)
 		/*
 		if(!tmpDir.exists() && !tmpDir.mkdir())
@@ -167,10 +171,14 @@ public class Controller {
 		*/
 		
 		// new version (read from a defined folder)
-		File[] imageFiles = formatImages(); 
+		if(imagesDir == null)
+			imagesDir = new File(config.getLocalImagesFolder());
+		if(!imagesDir.exists() || !imagesDir.isDirectory())
+			throw new Exception("Local images folder does not exist.");
+		File[] imageFiles = formatImages(imagesDir);
 		String[] remotePaths = uploadImages(imageFiles);
 		
-		String localDir = config.getLocalImagesFolder();
+		String localDir = imagesDir.getAbsolutePath();
 		String imagesUrlPrefix = config.getImagesUrlPrefix();
 		String fileName;
 		String key;
@@ -201,21 +209,19 @@ public class Controller {
 		}
 	}
 	
-	private static File[] formatImages() throws Exception {
-		File imagesDir = new File(config.getLocalImagesFolder());
-		if(!imagesDir.exists() || !imagesDir.isDirectory())
-			throw new Exception("Local images folder does not exist.");
-		
+	private static File[] formatImages(File imagesDir) throws Exception {
 		File[] imageFiles = imagesDir.listFiles();
 		String fileName;
 		String key;
 		String extension;
 		String newPath;
+		int dashPos;
 		for(int i = 0; i < imageFiles.length; ++i) {
 			fileName = imageFiles[i].getName();
-			key = fileName.substring(0, fileName.lastIndexOf('.')).toUpperCase();
-			extension = fileName.substring(key.length()).toLowerCase(); // with the dot
-			newPath = imageFiles[i].getParent() + File.separator + key + (fileName.indexOf('_') == -1 ? "_F" : "") + extension;
+			dashPos = fileName.indexOf('-');
+			key = fileName.substring(0, dashPos != -1 ? dashPos : fileName.lastIndexOf('.')).toUpperCase();
+			extension = fileName.substring(fileName.lastIndexOf('.')).toLowerCase(); // with the dot
+			newPath = imageFiles[i].getParent() + File.separator + key + (key.indexOf('_') == -1 ? "_F" : "") + extension;
 			if(!imageFiles[i].renameTo(new File(newPath)))
 				;//throw new Exception("Renaming file has failed.");
 			imageFiles[i] = new File(newPath); // required

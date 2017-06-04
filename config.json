@@ -3,7 +3,7 @@
 	port: 21,
 	login: "productsheet",
 	password: "Master2202$",
-	localImagesFolder: "images",
+	localImagesFolder: "",
 	remoteImagesFolder: "productsheet/gozeecommerceproductsheet",
 	imagesUrlPrefix: "http://gozeecommerce.com/productsheet/gozeecommerceproductsheet/"
 }

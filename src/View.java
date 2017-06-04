@@ -1,6 +1,8 @@
 import java.io.File;
 
 import javafx.application.Application;
+import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -11,7 +13,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -20,6 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
@@ -68,23 +70,23 @@ public class View extends Application {
 
 		// create columns
 		TableColumn<Product, ImageView> image = new TableColumn<Product, ImageView>("Image");
-		image.setCellValueFactory(new PropertyValueFactory<Product, ImageView>("image"));
+		image.setCellValueFactory(data -> new ReadOnlyObjectWrapper<ImageView>(data.getValue().getImage()));
 		TableColumn<Product, String> styleNumber = new TableColumn<Product, String>("Style number");
-		styleNumber.setCellValueFactory(new PropertyValueFactory<Product, String>("styleNumber"));
+		styleNumber.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getStyleNumber()));
 		TableColumn<Product, String> name = new TableColumn<Product, String>("Name");
-		name.setCellValueFactory(new PropertyValueFactory<Product, String>("name"));
+		name.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getName()));
 		TableColumn<Product, String> size = new TableColumn<Product, String>("Size");
-		size.setCellValueFactory(new PropertyValueFactory<Product, String>("size"));
+		size.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getSize()));
 		TableColumn<Product, String> frontImageUrl = new TableColumn<Product, String>("Front image URL");
-		frontImageUrl.setCellValueFactory(new PropertyValueFactory<Product, String>("frontImageUrl"));
+		frontImageUrl.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getFrontImageUrl()));
 		TableColumn<Product, String> backImageUrl = new TableColumn<Product, String>("Back image URL");
-		backImageUrl.setCellValueFactory(new PropertyValueFactory<Product, String>("backImageUrl"));
+		backImageUrl.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getBackImageUrl()));
 		TableColumn<Product, String> firstExtraImageUrl = new TableColumn<Product, String>("First extra image URL");
-		firstExtraImageUrl.setCellValueFactory(new PropertyValueFactory<Product, String>("firstExtraImageUrl"));
+		firstExtraImageUrl.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getFirstExtraImageUrl()));
 		TableColumn<Product, String> secondExtraImageUrl = new TableColumn<Product, String>("Second extra image URL");
-		secondExtraImageUrl.setCellValueFactory(new PropertyValueFactory<Product, String>("secondExtraImageUrl"));
+		secondExtraImageUrl.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getSecondExtraImageUrl()));
 		TableColumn<Product, String> thirdExtraImageUrl = new TableColumn<Product, String>("Third extra image URL");
-		thirdExtraImageUrl.setCellValueFactory(new PropertyValueFactory<Product, String>("thirdExtraImageUrl"));
+		thirdExtraImageUrl.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().getThirdExtraImageUrl()));
 
 		// add columns to table
 		table.setItems(Controller.getObservableTable());
@@ -114,7 +116,15 @@ public class View extends Application {
 		uploadButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				Controller.runProcess("upload");
+				if(Controller.isImagesDirDefined())
+					Controller.runProcess("upload");
+				else {
+					DirectoryChooser dirChooser = new DirectoryChooser();
+					dirChooser.setTitle("Select the folder containing images");
+					File dir = dirChooser.showDialog(mainStage);
+					if(dir != null)
+						Controller.runProcess("upload", dir);
+				}
 			}
 		});
 		
