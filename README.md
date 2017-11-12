@@ -18,6 +18,6 @@
 ### How it works
 * Load the "spreadsheet.xlsx" file available at the project root via the button "Load sheet"
 * Upload images from the "pictures" folder via the button "Upload images"
-* Save the retrieved URL into the spreadsheet via the button "Save"
+* Save returned URLs into the spreadsheet via the button "Save"
 
 The password is "cooya".
