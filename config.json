@@ -1,9 +1,9 @@
 {
-	host: "gozeecommerce.com",
-	port: 21,
-	login: "productsheet",
-	password: "Master2202$",
+	host: "",
+	port: 22,
+	login: "",
+	password: "",
 	localImagesFolder: "",
-	remoteImagesFolder: "productsheet/gozeecommerceproductsheet",
-	imagesUrlPrefix: "http://gozeecommerce.com/productsheet/gozeecommerceproductsheet/"
+	remoteImagesFolder: "pictures",
+	imagesUrlPrefix: "http://siteweb.com/pictures/"
 }

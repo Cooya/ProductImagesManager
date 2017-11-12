@@ -39,14 +39,23 @@ public class SFTPConnection implements Connection {
 			if(e.id != 4) // directory already exists == 4
 				throw e;
 		}
+		this.channel.cd(dirName);
 	}
 	
-	public boolean fileExists(String filePath) throws SftpException {
-		return this.channel.lstat(filePath) != null;
+	public boolean fileExists(String filePath) {
+		try {
+			this.channel.lstat(filePath);
+			return true;
+		}
+		catch(SftpException e) {
+			return false;
+		}
 	}
 	
 	public String[] uploadFiles(File[] files, boolean forceUpload) throws SftpException {
 		String currentDirectory = this.channel.pwd();
+		if(!currentDirectory.endsWith("/"))
+			currentDirectory += '/';
 		String[] remotePaths = new String[files.length];
 		
 		for(int i = 0; i < files.length; ++i) {
