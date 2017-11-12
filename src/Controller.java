@@ -15,7 +15,7 @@ import javafx.collections.ObservableList;
 
 public class Controller {
 	private static final String JSON_CONFIG_FILE = "config.json";
-	private static final String HASH = "cffd022da1b52339734c683f47bbe70c";
+	private static final String HASH = "257a2b03bf66e8e3f0578582c430e090";
 	
 	private static JSONConfig config;
 	private static Connection connection;
