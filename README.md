@@ -1,4 +1,4 @@
-# Product Images Manager (freelance project)
+# Product Images Manager (freelance job)
 
 ## To build
 * Bind .jar libraries to the project
